@@ -7,8 +7,8 @@ import os
 
 API_KEY = os.getenv("API_KEY")
 API_SECRET = os.getenv("API_SECRET")
-BOT_TOKEN = os.getenv("BOT_TOKEN")
-CHAT_ID = os.getenv("CHAT_ID")
+BOT_TOKEN = os.getenv("TELEGRAM_TOKEN")
+CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 
 BASE_URL = "https://api.delta.exchange"
 QTY = 1
@@ -112,5 +112,20 @@ def run():
                 positions.remove(p)
 
         time.sleep(3)
+try:
+    # आपका पूरा trading logic यहाँ
+    print("Bot running...")
+
+except Exception as e:
+    print("Error:", str(e))
+
+import requests
+
+def send_telegram(msg):
+    url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+    data = {"chat_id": CHAT_ID, "text": msg}
+    requests.post(url, data=data)
+
+send_telegram("Bot Started ✅")
 
 run()
