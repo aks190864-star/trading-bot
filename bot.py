@@ -40,12 +40,20 @@ def request(method, path, body=None):
     else:
         return requests.post(url, headers=headers, data=body_str).json()
 
-def get_spot():
-    data = requests.get(BASE_URL + "/v2/tickers").json()
-    for i in data['result']:
-        if i['symbol'] == "BTCUSD":
-            return float(i['mark_price'])
+import requests
 
+def get_spot():
+    try:
+        url = "https://api.delta.exchange/v2/tickers/BTCUSD"
+        res = requests.get(url).json()
+
+        spot = float(res['result']['last_price'])
+        return spot
+
+    except Exception as e:
+        print("Spot fetch error:", e)
+        return 67000   # fallback प्राइस
+        
 def get_strikes(spot):
     return round(spot * 1.07, -2), round(spot * 0.93, -2)
 
@@ -76,8 +84,12 @@ def run():
     send_telegram("🚀 Bot Started")
 
     spot = get_spot()
-    call, put = get_strikes(spot)
+print("Current Spot:", spot)
 
+if spot is None:
+    print("Spot not available, using fallback")
+    spot = 67000
+    
     ce_id, ce_symbol = get_option(call, "C")
     pe_id, pe_symbol = get_option(put, "P")
 
