@@ -90,4 +90,20 @@ Strategy:
 
 # 🔹 Run
 if __name__ == "__main__":
+    
+        def send_telegram(msg):
+    try:
+        print("TOKEN:", BOT_TOKEN)
+        print("CHAT_ID:", CHAT_ID)
+
+        url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+        data = {"chat_id": CHAT_ID, "text": msg}
+
+        res = requests.post(url, data=data)
+        print("Telegram response:", res.text)
+
+    except Exception as e:
+        print("Telegram error:", e)
+
+    
     run()
