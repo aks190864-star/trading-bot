@@ -41,7 +41,7 @@ def get_strikes(spot):
 def run():
     try:
         spot = get_spot()
-        print("Spot:", spot)
+        print("Current Spot:", spot)
 
         call, put = get_strikes(spot)
 
